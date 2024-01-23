@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { useState } from 'react'
 
 function Signup() {
@@ -14,26 +15,17 @@ function Signup() {
             Email: signupForm.Email,
             Password: signupForm.Password
         }
-        const response = await fetch('http://127.0.0.1:3001/users', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-
-            body: JSON.stringify(signupBody)
-        })
-        const data = await response.json()
-        if (response.status == 200) {
-            console.log("Account created")
-            console.log(data)
+        try{
+            const response= await axios.post('http://127.0.0.1:3001/users', signupBody)
+            console.log(response.data)
             setSignupForm({
-                Name: '',
-                Password: '',
-                Email : '',
+                Name:'',
+                Email: '' ,
+                Password: ''
             })
-        } else {
-            console.log('err creating account')
-        }
+        } catch(error) {
+            console.log('err posting data' ,error)
+        }     
     }
     return (
         <div>

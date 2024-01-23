@@ -1,13 +1,24 @@
+import axios from 'axios'
 import React, { useState } from 'react'
 
 function Login() {
     const [loginForm, setLoginform] = useState({
-        email: '',
-        password: ''
+        Email: '',
+        Password: ''
     })
-    const loginFormHandler = (e) => {
+    const loginFormHandler = async (e) => {
         e.preventDefault()
-        console.log(loginForm)
+        // console.log(loginForm)
+        const loginBody ={
+            Email:loginForm.Email,
+            Password:loginForm.Password
+        }
+        try{
+            const response = await axios.post('http://127.0.0.1:3001/login', loginBody)
+            console.log(response.data)
+        } catch(e) {
+            console.log('err logging in user', e)
+        }
     }
     return (
         <div>
@@ -16,13 +27,13 @@ function Login() {
                 <b>Email</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input
                     type="email"
-                    value={loginForm.email}
-                    onChange={(e) => setLoginform({ ...loginForm, email: e.target.value })} />  <br /> <br />
+                    value={loginForm.Email}
+                    onChange={(e) => setLoginform({ ...loginForm, Email: e.target.value })} />  <br /> <br />
                 <b>Password</b>&nbsp;&nbsp;
                 <input
                     type="password"
-                    value={loginForm.password}
-                    onChange={(e) => setLoginform({ ...loginForm, password: e.target.value })} /> <br /> <br />
+                    value={loginForm.Password}
+                    onChange={(e) => setLoginform({ ...loginForm, Password: e.target.value })} /> <br /> <br />
                 <button type='submit'>Login</button> &nbsp; &nbsp; &nbsp;
             </form> <br />
             <button type='submit'>Forgot Password?</button>
