@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { useState } from 'react'
 
 function Login() {
@@ -8,19 +9,19 @@ function Login() {
     const loginFormHandler = async (e) => {
         e.preventDefault()
         // console.log(loginForm)
-        const response= await fetch('http://127.0.0.1:3001/login',{
-            method: 'POST',
-            headers:{
-                'Content-Type' : 'application/json'
-            },
-            body: JSON.stringify(loginForm)
-        })
-        const data = await response.json()
-        if(response.status==200){
-            console.log('login successfull')
-            console.log(data)
-        }else{
-            console.log('err logging in')
+        const loginBody= {
+            Email: loginForm.email,
+            Password: loginForm.password
+        }
+        try{
+            const response= await axios.post('http://127.0.0.1:3001/login',loginBody)
+            console.log(response.data)
+            setLoginform({
+                email:'',
+                password:''
+            })
+        } catch(e) {
+            console.log(e)
         }
     }
     return (
