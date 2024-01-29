@@ -1,26 +1,37 @@
 import axios from 'axios'
 import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Login() {
+    const navigate = useNavigate()
     const [loginForm, setLoginform] = useState({
         email: '',
         password: ''
     })
+    const [token, setToken] = useState(null)
+    const [user, setUser] = useState(null)
     const loginFormHandler = async (e) => {
         e.preventDefault()
         // console.log(loginForm)
-        const loginBody= {
+        const loginBody = {
             Email: loginForm.email,
             Password: loginForm.password
         }
-        try{
-            const response= await axios.post('http://127.0.0.1:3001/login',loginBody)
+        try {
+            const response = await axios.post('http://127.0.0.1:3001/login', loginBody)
             console.log(response.data)
             setLoginform({
-                email:'',
-                password:''
+                email: '',
+                password: ''
             })
-        } catch(e) {
+            setToken(response.data.token)
+            setUser(response.data)
+            window.localStorage.setItem('token', response.data.token)
+            window.localStorage.setItem('user', JSON.stringify(response.data))
+            if (response.data) {
+                navigate(`/dashboard/${response.data.Name}`)
+            }
+        } catch (e) {
             console.log(e)
         }
     }
@@ -40,7 +51,7 @@ function Login() {
                     onChange={(e) => setLoginform({ ...loginForm, password: e.target.value })} /> <br /> <br />
                 <button type='submit'>Login</button> &nbsp; &nbsp; &nbsp;
             </form> <br />
-            <button type='submit'>Forgot Password?</button>
+            <Link to={'/forgot-password'}>Forgot Password?</Link>
         </div>
     )
 }
