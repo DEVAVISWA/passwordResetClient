@@ -15,7 +15,7 @@ function ResetPassword() {
         }
         try {
             const response=axios.post(`http://127.0.0.1:3001/reset-password/${id}/${token}`, body)
-            console.log(response.data)
+            // console.log(response.data)
         }catch(e){
             console.log(e)
         }       

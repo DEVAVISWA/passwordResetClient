@@ -1,7 +1,9 @@
 import axios from 'axios'
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function ForgotPassword() {
+    const navigate= useNavigate()
     const [email, setEmail] = useState()
 
     const handleSubmit = (e) => {
@@ -11,10 +13,12 @@ function ForgotPassword() {
         }
         try {
             const response=axios.post('http://127.0.0.1:3001/forgot-password', body)
-            console.log(response.data)
+            // console.log(response.data)
+            alert('Check your entered Mail')
         }catch(e){
             console.log(e)
-        }       
+        }   
+        navigate('/login')    
     }
 
     return (
@@ -30,6 +34,7 @@ function ForgotPassword() {
                             type="email"
                             placeholder="Enter Email"
                             autoComplete="off"
+                            required
                             name="email"
                             onChange={(e) => setEmail(e.target.value)}
                         />
